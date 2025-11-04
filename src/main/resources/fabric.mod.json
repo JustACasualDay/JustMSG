@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "justmsg",
+  "version": "${version}",
+  "name": "JustMSG",
+  "description": "",
+  "authors": [],
+  "contact": {},
+  "license": "All-Rights-Reserved",
+  "icon": "assets/msgmod/icon.png",
+  "environment": "*",
+  "entrypoints": {
+    "client": [
+      "at.justacasualday.justmsg.client.JustMSGClient"
+    ],
+    "main": [
+      "at.justacasualday.justmsg.JustMSGmod"
+    ]
+  },
+  "depends": {
+    "fabricloader": ">=${loader_version}",
+    "fabric": "*",
+    "minecraft": "${minecraft_version}"
+  }
+}
