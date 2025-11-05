@@ -51,17 +51,19 @@ public abstract class ChatManager {
         ClientReceiveMessageEvents.ALLOW_CHAT.register((text, signedMessage, gameProfile, parameters, instant) -> {
             String message;
 
-            // TODO
-            if(MessageType.MSG_COMMAND_OUTGOING == parameters.type()) return false;
-            /*
             if (text.getContent() instanceof TranslatableTextContent translatable) {
                 Object[] args = translatable.getArgs();
                 if (args.length >= 2 && args[1] instanceof Text msgPart) {
                     message = msgPart.getString();
 
-                    if(parameters.type() == MessageType.MSG_COMMAND_OUTGOING && message.equalsIgnoreCase(currentmessage)) return false;
+                    // minecraft:msg_command_outgoing
+                    if(parameters.type().getIdAsString().equalsIgnoreCase(MessageType.MSG_COMMAND_OUTGOING.getValue().toString())
+                            && message.equalsIgnoreCase(currentmessage)) {
+                        // Block Vanilla Echo Message
+                        return false;
+                    }
                 }
-            }*/
+            }
 
 
 

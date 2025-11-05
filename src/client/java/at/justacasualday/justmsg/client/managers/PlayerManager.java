@@ -11,7 +11,6 @@ public abstract class PlayerManager {
     private static Set<String> targets = new HashSet<>();
 
 
-
     public static List<String> clearOfflinePlayers() {
         List<String> clearedPlayers = new ArrayList<>();
         List<String> currentPlayers = getAllOnlinePlayers();
