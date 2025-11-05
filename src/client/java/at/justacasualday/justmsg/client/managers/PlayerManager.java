@@ -11,13 +11,12 @@ public abstract class PlayerManager {
     private static Set<String> targets = new HashSet<>();
 
 
-
     public static List<String> clearOfflinePlayers() {
         List<String> clearedPlayers = new ArrayList<>();
         List<String> currentPlayers = getAllOnlinePlayers();
 
-        for(String player : targets) {
-            if(!currentPlayers.contains(player)) {
+        for (String player : targets) {
+            if (!currentPlayers.contains(player)) {
                 clearedPlayers.add(player);
             }
         }
@@ -41,10 +40,10 @@ public abstract class PlayerManager {
 
     public static boolean addOrRemoveTarget(String target) {
         String pTarget = target.toLowerCase();
-        if(targets.contains(pTarget)) {
+        if (targets.contains(pTarget)) {
             targets.remove(pTarget);
 
-            if(targets.isEmpty()) {
+            if (targets.isEmpty()) {
                 ChatManager.setIsActive(false);
             }
             return false;
@@ -57,7 +56,7 @@ public abstract class PlayerManager {
     }
 
     public static boolean clearTargets() {
-        if(!targets.isEmpty()) {
+        if (!targets.isEmpty()) {
             targets.clear();
             ChatManager.setIsActive(false);
 
