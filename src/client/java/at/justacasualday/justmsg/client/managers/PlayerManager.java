@@ -2,13 +2,12 @@ package at.justacasualday.justmsg.client.managers;
 
 import net.minecraft.client.MinecraftClient;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 public abstract class PlayerManager {
 	private static Set<String> targets = new HashSet<>();
+
+	private static HashMap<String, Set<String>> groups = new HashMap<>();
 
 	public static List<String> clearOfflinePlayers() {
 		List<String> clearedPlayers = new ArrayList<>();
@@ -67,5 +66,47 @@ public abstract class PlayerManager {
 
 	public static Set<String> getTargets() {
 		return targets;
+	}
+
+	public static Set<String> getGroups() {
+		return groups.keySet();
+	}
+
+	public static Set<String> getGroupMembers(String group) {
+		return groups.get(group);
+	}
+
+	public static boolean copyGroup(String srcGroup, String destGroup) {
+		if (!groups.containsKey(srcGroup) || groups.containsKey(destGroup))
+			return false;
+
+		groups.put(destGroup, new HashSet<>(groups.get(srcGroup)));
+
+		return true;
+	}
+
+	public static boolean addOrRemoveFromGroup(String group, String player) {
+		Set<String> groupMembers = groups.get(group);
+		if (groupMembers == null) {
+			groupMembers = new HashSet<>();
+			groupMembers.add(player.toLowerCase());
+
+			groups.put(group, groupMembers);
+			return true;
+		}
+
+		if (groupMembers.contains(player.toLowerCase())) {
+			groupMembers.remove(player.toLowerCase());
+
+			if (groupMembers.isEmpty()) {
+				groups.remove(group);
+			}
+
+			return false;
+		} else {
+			groupMembers.add(player.toLowerCase());
+		}
+
+		return true;
 	}
 }

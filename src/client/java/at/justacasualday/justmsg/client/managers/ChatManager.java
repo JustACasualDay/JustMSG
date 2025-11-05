@@ -16,13 +16,15 @@ import java.util.stream.Collectors;
 public abstract class ChatManager {
 	private static boolean isActive = false;
 
-	private static String currentmessage = "";
+	private static String currentMessage = "";
+	private static String currentGroup = null;
 
 	public static void register() {
         ClientSendMessageEvents.ALLOW_CHAT.register(message -> {
             if (!isIsActive()) {
                 return true;
             }
+
             ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
 
             List<String> cleared = PlayerManager.clearOfflinePlayers();
@@ -31,7 +33,7 @@ public abstract class ChatManager {
                 MinecraftClient.getInstance().player.sendMessage(Text.literal("Removed " + cleared.stream().collect(Collectors.joining(", ")) + " because they were offline!"), false);
             }
 
-            currentmessage = message;
+            currentMessage = message;
 
             for (String player : PlayerManager.getTargets()) {
                 handler.sendChatCommand("msg " + player + " " + message);
@@ -54,7 +56,7 @@ public abstract class ChatManager {
 
                     // minecraft:msg_command_outgoing
                     if (parameters.type().getIdAsString().equalsIgnoreCase(MessageType.MSG_COMMAND_OUTGOING.getValue().toString())
-                            && message.equalsIgnoreCase(currentmessage)) {
+                            && message.equalsIgnoreCase(currentMessage)) {
                         // Block Vanilla Echo Message
                         return false;
                     }
