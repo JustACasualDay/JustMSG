@@ -14,11 +14,11 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 public abstract class ChatManager {
-    private static boolean isActive = false;
+	private static boolean isActive = false;
 
-    private static String currentmessage = "";
+	private static String currentmessage = "";
 
-    public static void register() {
+	public static void register() {
         ClientSendMessageEvents.ALLOW_CHAT.register(message -> {
             if (!isIsActive()) {
                 return true;
@@ -65,11 +65,11 @@ public abstract class ChatManager {
         });
     }
 
-    public static boolean isIsActive() {
-        return isActive;
-    }
+	public static boolean isIsActive() {
+		return isActive;
+	}
 
-    public static void setIsActive(boolean value) {
-        isActive = value;
-    }
+	public static void setIsActive(boolean value) {
+		isActive = value;
+	}
 }

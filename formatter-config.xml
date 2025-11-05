@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<profiles version="12">
+  <profile kind="CodeFormatterProfile" name="Custom" version="12">
+    <setting id="org.eclipse.jdt.core.formatter.lineSplit" value="100"/>
+    <setting id="org.eclipse.jdt.core.formatter.join_wrapped_lines" value="false"/>
+    <setting id="org.eclipse.jdt.core.formatter.alignment_for_selector_in_method_invocation" value="80"/>
+    <setting id="org.eclipse.jdt.core.formatter.wrap_before_binary_operator" value="true"/>
+    <setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_allocation_expression" value="16"/>
+    <setting id="org.eclipse.jdt.core.formatter.alignment_for_arguments_in_method_invocation" value="16"/>
+    <setting id="org.eclipse.jdt.core.formatter.alignment_for_assignment" value="16"/>
+  </profile>
+</profiles>
