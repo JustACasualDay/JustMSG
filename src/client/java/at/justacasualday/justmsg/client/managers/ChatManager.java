@@ -40,8 +40,6 @@ public abstract class ChatManager {
         ClientReceiveMessageEvents.ALLOW_CHAT.register((text, signedMessage, gameProfile, parameters, instant) -> {
             String message;
 
-            PlayerManager.sendMessage("Parameters: " + parameters.type().getIdAsString());
-
             if (text.getContent() instanceof TranslatableTextContent translatable) {
                 Object[] args = translatable.getArgs();
                 if (args.length >= 2 && args[1] instanceof Text msgPart) {
