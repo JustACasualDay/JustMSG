@@ -1,5 +1,6 @@
 package at.justacasualday.justmsg.client;
 
+import at.justacasualday.justmsg.client.commands.MessageToggleCommand;
 import at.justacasualday.justmsg.client.managers.ChatManager;
 import net.fabricmc.api.ClientModInitializer;
 

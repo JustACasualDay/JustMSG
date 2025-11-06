@@ -10,14 +10,13 @@ import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 
-import java.util.List;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class ChatManager {
 	private static boolean isActive = false;
 
 	private static String currentMessage = "";
-	private static String currentGroup = null;
 
 	public static void register() {
         ClientSendMessageEvents.ALLOW_CHAT.register(message -> {
@@ -27,20 +26,16 @@ public abstract class ChatManager {
 
             ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
 
-            List<String> cleared = PlayerManager.clearOfflinePlayers();
-
-            if (!cleared.isEmpty()) {
-                MinecraftClient.getInstance().player.sendMessage(Text.literal("Removed " + cleared.stream().collect(Collectors.joining(", ")) + " because they were offline!"), false);
-            }
+            Set<String> onlineTargets = PlayerManager.getAllOnlineTargets();
 
             currentMessage = message;
 
-            for (String player : PlayerManager.getTargets()) {
-                handler.sendChatCommand("msg " + player + " " + message);
+            for (String player : onlineTargets) {
+                handler.sendChatCommand("msg " + PlayerManager.getAliasForPlayer(player) + " " + message);
             }
 
             MinecraftClient.getInstance().inGameHud.getChatHud()
-                    .addMessage(Text.literal("You whispered to " + PlayerManager.getTargets().stream().collect(Collectors.joining(" and ")) + ": " + message)
+                .addMessage(Text.literal("You whispered to " + onlineTargets.stream().collect(Collectors.joining(" and ")) + ": " + message)
                             .setStyle(Style.EMPTY.withColor(Formatting.GRAY).withItalic(true)));
 
             return false;
