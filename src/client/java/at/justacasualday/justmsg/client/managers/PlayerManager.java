@@ -85,7 +85,7 @@ public abstract class PlayerManager {
 		return true;
 	}
 
-	public static boolean addOrRemoveFromGroup(String group, String player) {
+	public static boolean addToGroup(String group, String player) {
 		Set<String> groupMembers = groups.get(group);
 		if (groupMembers == null) {
 			groupMembers = new HashSet<>();
@@ -95,6 +95,21 @@ public abstract class PlayerManager {
 			return true;
 		}
 
+		if (!groupMembers.contains(player.toLowerCase())) {
+			groupMembers.add(player.toLowerCase());
+
+			return true;
+		}
+
+		return false;
+	}
+
+	public static boolean removeFromGroup(String group, String player) {
+		Set<String> groupMembers = groups.get(group);
+
+		if (groupMembers == null)
+			return false;
+
 		if (groupMembers.contains(player.toLowerCase())) {
 			groupMembers.remove(player.toLowerCase());
 
@@ -102,11 +117,9 @@ public abstract class PlayerManager {
 				groups.remove(group);
 			}
 
-			return false;
-		} else {
-			groupMembers.add(player.toLowerCase());
+			return true;
 		}
 
-		return true;
+		return false;
 	}
 }
