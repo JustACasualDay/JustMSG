@@ -205,10 +205,25 @@ public abstract class PlayerManager {
 		if (alias == null) {
 			alias = player;
 		}
+
 		return alias;
 	}
 
 	public static String getPlayerFromAlias(String alias) {
-		return aliases.get(alias);
+		String player = aliases.get(alias);
+
+		if (player == null) {
+			player = alias;
+		}
+
+		return player;
+	}
+
+	public static List<String> getMessagedTargets() {
+		List<String> playerList = new ArrayList<>();
+
+		getAllOnlineTargets().stream().forEach(p -> playerList.add(PlayerManager.getAliasForPlayer(p)));
+
+		return playerList;
 	}
 }
