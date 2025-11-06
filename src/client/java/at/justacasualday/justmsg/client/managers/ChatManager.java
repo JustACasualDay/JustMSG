@@ -1,16 +1,16 @@
 package at.justacasualday.justmsg.client.managers;
 
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.client.network.ClientPlayNetworkHandler;
 import net.minecraft.network.message.MessageType;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableTextContent;
 import net.minecraft.util.Formatting;
 
-import java.util.Set;
 import java.util.stream.Collectors;
 
 public abstract class ChatManager {
@@ -24,18 +24,14 @@ public abstract class ChatManager {
                 return true;
             }
 
-            ClientPlayNetworkHandler handler = MinecraftClient.getInstance().getNetworkHandler();
-
-            Set<String> onlineTargets = PlayerManager.getAllOnlineTargets();
-
             currentMessage = message;
 
-            for (String player : onlineTargets) {
-                handler.sendChatCommand("msg " + PlayerManager.getAliasForPlayer(player) + " " + message);
+            for (String player : PlayerManager.getAllOnlineTargets()) {
+                MinecraftClient.getInstance().getNetworkHandler().sendChatCommand("msg " + player + " " + message);
             }
 
             MinecraftClient.getInstance().inGameHud.getChatHud()
-                .addMessage(Text.literal("You whispered to " + onlineTargets.stream().collect(Collectors.joining(" and ")) + ": " + message)
+                .addMessage(Text.literal("You whispered to " + PlayerManager.getMessagedTargets().stream().collect(Collectors.joining(" and ")) + ": " + message)
                             .setStyle(Style.EMPTY.withColor(Formatting.GRAY).withItalic(true)));
 
             return false;
