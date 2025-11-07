@@ -1,7 +1,5 @@
 package at.justacasualday.justmsg.client.managers;
 
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.minecraft.client.MinecraftClient;
@@ -32,10 +30,11 @@ public abstract class ChatManager {
 
             MinecraftClient.getInstance().inGameHud.getChatHud()
                 .addMessage(Text.literal("You whispered to " + PlayerManager.getMessagedTargets().stream().collect(Collectors.joining(" and ")) + ": " + message)
-                            .setStyle(Style.EMPTY.withColor(Formatting.GRAY).withItalic(true)));
+                    .setStyle(Style.EMPTY.withColor(Formatting.GRAY).withItalic(true)));
 
             return false;
         });
+
 
         ClientReceiveMessageEvents.ALLOW_CHAT.register((text, signedMessage, gameProfile, parameters, instant) -> {
             String message;
@@ -47,10 +46,28 @@ public abstract class ChatManager {
 
                     // minecraft:msg_command_outgoing
                     if (parameters.type().getIdAsString().equalsIgnoreCase(MessageType.MSG_COMMAND_OUTGOING.getValue().toString())
-                            && message.equalsIgnoreCase(currentMessage)) {
+                        && message.equalsIgnoreCase(currentMessage)) {
                         // Block Vanilla Echo Message
                         return false;
                     }
+                }
+            }
+
+            return true;
+        });
+
+
+        ClientReceiveMessageEvents.ALLOW_GAME.register((text, overlay) -> {
+            String parameter;
+
+            if (text.getContent() instanceof TranslatableTextContent translatable) {
+                parameter = translatable.getKey();
+
+                // commands.message.display.outgoing
+                if (parameter.equalsIgnoreCase("commands.message.display.outgoing")
+                    && ChatManager.isIsActive()) {
+                    // Block Vanilla Echo Message
+                    return false;
                 }
             }
 
