@@ -3,7 +3,7 @@
   "id": "justmsg",
   "version": "${version}",
   "name": "JustMSG",
-  "description": "",
+  "description": "A small QOL Mod, that improves the /msg command",
   "authors": [],
   "contact": {},
   "license": "All-Rights-Reserved",
@@ -12,9 +12,6 @@
   "entrypoints": {
     "client": [
       "at.justacasualday.justmsg.client.JustMSGClient"
-    ],
-    "main": [
-      "at.justacasualday.justmsg.JustMSGmod"
     ]
   },
   "depends": {

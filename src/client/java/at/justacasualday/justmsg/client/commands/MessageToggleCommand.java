@@ -1,6 +1,7 @@
 package at.justacasualday.justmsg.client.commands;
 
 import at.justacasualday.justmsg.client.api.enums.CommandParams;
+import at.justacasualday.justmsg.client.managers.ChatManager;
 import at.justacasualday.justmsg.client.managers.PlayerManager;
 import com.mojang.brigadier.arguments.StringArgumentType;
 import com.mojang.brigadier.context.CommandContext;
@@ -23,6 +24,12 @@ public class MessageToggleCommand {
                         .suggests((context, builder) -> CommandSource
                             .suggestMatching(PlayerManager.getAllOnlinePlayers(), builder))
                         .executes(MessageToggleCommand::addTarget)))
+
+                .then(ClientCommandManager.literal("remove")
+                    .then(ClientCommandManager.argument(CommandParams.TARGET.getArgName(), StringArgumentType.string())
+                        .suggests((context, builder) -> CommandSource
+                            .suggestMatching(PlayerManager.getAllOnlinePlayers(), builder))
+                        .executes(MessageToggleCommand::removeTarget)))
 
                 .then(ClientCommandManager.literal("aliases")
                     .then(ClientCommandManager.literal("add")
@@ -89,6 +96,28 @@ public class MessageToggleCommand {
             );
         });
         // spotless:on
+	}
+
+	private static int removeTarget(CommandContext<FabricClientCommandSource> context) {
+		String target = StringArgumentType.getString(context, CommandParams.TARGET.getArgName());
+
+		target = PlayerManager.getPlayerFromAlias(target);
+
+		if (PlayerManager.getTargets().contains(target.toLowerCase())) {
+			PlayerManager.removeTarget(target);
+			PlayerManager.sendMessage("Removed " + target.toLowerCase() + " from MSG-Multicast!");
+		}
+
+		if (PlayerManager.getTargets().isEmpty()) {
+			ChatManager.setIsActive(false);
+
+			return 0;
+		}
+
+		PlayerManager.sendMessage(
+				"Currently Messaging: " + PlayerManager.getTargets().stream().collect(Collectors.joining(", ")) + "!");
+
+		return 0;
 	}
 
 	private static int listAliases(CommandContext<FabricClientCommandSource> context) {
@@ -209,25 +238,19 @@ public class MessageToggleCommand {
 		if (!PlayerManager.isPlayerOnline(target)) {
 			PlayerManager.sendMessage(target + " is not online!");
 
-			if (PlayerManager.getTargets().contains(target.toLowerCase())) {
-				PlayerManager.sendMessage("Removing " + target + " from targets!");
-				PlayerManager.removeTarget(target);
-			}
-
 			return 0;
 		}
 
 		if (PlayerManager.addTarget(target)) {
-			PlayerManager.sendMessage("Added " + target.toLowerCase() + " to MSG-Multicast!");
+			PlayerManager.sendMessage("Added " + target + " to MSG-Multicast!");
 		} else {
-			PlayerManager.removeTarget(target);
-			PlayerManager.sendMessage("Removed " + target.toLowerCase() + " from MSG-Multicast!");
+			PlayerManager.sendMessage("Could not add " + target + " because they are already added!");
+            return 0;
 		}
 
-		if (!PlayerManager.getTargets().isEmpty()) {
-			PlayerManager.sendMessage("Currently Messaging: "
-					+ PlayerManager.getTargets().stream().collect(Collectors.joining(", ")) + "!");
-		}
+		PlayerManager.sendMessage(
+				"Currently Messaging: " + PlayerManager.getTargets().stream().collect(Collectors.joining(", ")) + "!");
+
 		return 0;
 	}
 

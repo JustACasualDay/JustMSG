@@ -24,6 +24,10 @@ public abstract class ChatManager {
 
             currentMessage = message;
 
+            if(PlayerManager.getAllOnlineTargets().isEmpty()) {
+                return true;
+            }
+
             for (String player : PlayerManager.getAllOnlineTargets()) {
                 MinecraftClient.getInstance().getNetworkHandler().sendChatCommand("msg " + player + " " + message);
             }
