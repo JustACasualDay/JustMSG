@@ -245,7 +245,7 @@ public class MessageToggleCommand {
 			PlayerManager.sendMessage("Added " + target + " to MSG-Multicast!");
 		} else {
 			PlayerManager.sendMessage("Could not add " + target + " because they are already added!");
-            return 0;
+			return 0;
 		}
 
 		PlayerManager.sendMessage(
