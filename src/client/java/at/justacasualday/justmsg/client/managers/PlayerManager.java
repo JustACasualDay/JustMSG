@@ -71,27 +71,27 @@ public abstract class PlayerManager {
 			return false;
 		}
 
-        targets.add(pTarget);
-        ChatManager.setIsActive(true);
+		targets.add(pTarget);
+		ChatManager.setIsActive(true);
 
 		return true;
 	}
 
-    public static boolean removeTarget(String target) {
-        String pTarget = target.toLowerCase();
+	public static boolean removeTarget(String target) {
+		String pTarget = target.toLowerCase();
 
-        if (targets.contains(pTarget)) {
-            targets.remove(pTarget);
+		if (targets.contains(pTarget)) {
+			targets.remove(pTarget);
 
-            if (targets.isEmpty()) {
-                ChatManager.setIsActive(false);
-            }
+			if (targets.isEmpty()) {
+				ChatManager.setIsActive(false);
+			}
 
-            return true;
-        }
+			return true;
+		}
 
-        return false;
-    }
+		return false;
+	}
 
 	public static boolean clearTargets() {
 		if (!targets.isEmpty()) {
