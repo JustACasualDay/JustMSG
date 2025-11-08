@@ -28,8 +28,15 @@ public abstract class ChatManager {
                 MinecraftClient.getInstance().getNetworkHandler().sendChatCommand("msg " + player + " " + message);
             }
 
+            if (!PlayerManager.isGroupActive()) {
+                MinecraftClient.getInstance().inGameHud.getChatHud()
+                    .addMessage(Text.literal("You whispered to " + PlayerManager.getMessagedTargets().stream().collect(Collectors.joining(" and ")) + ": " + message)
+                        .setStyle(Style.EMPTY.withColor(Formatting.GRAY).withItalic(true)));
+                return false;
+            }
+
             MinecraftClient.getInstance().inGameHud.getChatHud()
-                .addMessage(Text.literal("You whispered to " + PlayerManager.getMessagedTargets().stream().collect(Collectors.joining(" and ")) + ": " + message)
+                .addMessage(Text.literal("You whispered to " + "[" + PlayerManager.getActiveGroupName() + "]" + ": " + message)
                     .setStyle(Style.EMPTY.withColor(Formatting.GRAY).withItalic(true)));
 
             return false;

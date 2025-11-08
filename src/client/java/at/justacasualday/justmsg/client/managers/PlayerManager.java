@@ -9,6 +9,7 @@ import java.util.*;
 public abstract class PlayerManager {
 	private static Set<String> SAVEDGROUPMEMBERS = null;
 	private static boolean groupActive = false;
+	private static String activeGroupName = null;
 
 	private static Set<String> targets = new HashSet<>();
 	private static HashMap<String, Set<String>> groups = new HashMap<>();
@@ -170,9 +171,14 @@ public abstract class PlayerManager {
 		if (!isGroupActive()) {
 			SAVEDGROUPMEMBERS = targets;
 			groupActive = true;
+			activeGroupName = group;
 		}
 
 		targets = groups.get(group);
+
+		if (!ChatManager.isIsActive()) {
+			ChatManager.setIsActive(true);
+		}
 
 		return true;
 	}
@@ -225,5 +231,9 @@ public abstract class PlayerManager {
 		getAllOnlineTargets().stream().forEach(p -> playerList.add(PlayerManager.getAliasForPlayer(p)));
 
 		return playerList;
+	}
+
+	public static String getActiveGroupName() {
+		return activeGroupName;
 	}
 }

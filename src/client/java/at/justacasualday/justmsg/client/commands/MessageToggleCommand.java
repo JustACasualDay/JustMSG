@@ -42,6 +42,15 @@ public class MessageToggleCommand {
 
                 .then(ClientCommandManager.literal("group")
 
+                    .then(ClientCommandManager.literal("set")
+                        .then(ClientCommandManager.argument(CommandParams.GROUP.getArgName(), StringArgumentType.string())
+                            .suggests((context, builder) -> CommandSource
+                                .suggestMatching(PlayerManager.getGroups(), builder))
+                            .executes(MessageToggleCommand::set)))
+
+                    .then(ClientCommandManager.literal("reset")
+                        .executes(MessageToggleCommand::resetGroup))
+
                     .then(ClientCommandManager.literal("modify")
                         .then(ClientCommandManager.literal("add")
                             .then(ClientCommandManager.argument(CommandParams.GROUP.getArgName(), StringArgumentType.string())
@@ -66,16 +75,6 @@ public class MessageToggleCommand {
                                 .suggests((context, builder) -> CommandSource
                                     .suggestMatching(PlayerManager.getGroups(), builder))
                             .executes(MessageToggleCommand::listGroupMembers)))
-
-                        .then(ClientCommandManager.literal("set")
-                            .then(ClientCommandManager.argument(CommandParams.GROUP.getArgName(), StringArgumentType.string())
-                                .suggests((context, builder) -> CommandSource
-                                    .suggestMatching(PlayerManager.getGroups(), builder))
-                                .executes(MessageToggleCommand::set)))
-
-                        .then(ClientCommandManager.literal("reset")
-                            .executes(MessageToggleCommand::resetGroup))
-
 
                         .then(ClientCommandManager.literal("copy")
                             .then(ClientCommandManager.argument(CommandParams.SRCGROUP.getArgName(), StringArgumentType.string())
