@@ -64,22 +64,34 @@ public abstract class PlayerManager {
 		return players;
 	}
 
-	public static boolean addOrRemoveTarget(String target) {
+	public static boolean addTarget(String target) {
 		String pTarget = target.toLowerCase();
-		if (targets.contains(pTarget)) {
-			targets.remove(pTarget);
 
-			if (targets.isEmpty()) {
-				ChatManager.setIsActive(false);
-			}
+		if (targets.contains(pTarget)) {
 			return false;
-		} else {
-			targets.add(pTarget);
-			ChatManager.setIsActive(true);
 		}
+
+        targets.add(pTarget);
+        ChatManager.setIsActive(true);
 
 		return true;
 	}
+
+    public static boolean removeTarget(String target) {
+        String pTarget = target.toLowerCase();
+
+        if (targets.contains(pTarget)) {
+            targets.remove(pTarget);
+
+            if (targets.isEmpty()) {
+                ChatManager.setIsActive(false);
+            }
+
+            return true;
+        }
+
+        return false;
+    }
 
 	public static boolean clearTargets() {
 		if (!targets.isEmpty()) {

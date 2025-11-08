@@ -211,14 +211,16 @@ public class MessageToggleCommand {
 
 			if (PlayerManager.getTargets().contains(target.toLowerCase())) {
 				PlayerManager.sendMessage("Removing " + target + " from targets!");
+                PlayerManager.removeTarget(target);
 			}
 
 			return 0;
 		}
 
-		if (PlayerManager.addOrRemoveTarget(target)) {
+		if (PlayerManager.addTarget(target)) {
 			PlayerManager.sendMessage("Added " + target.toLowerCase() + " to MSG-Multicast!");
 		} else {
+            PlayerManager.removeTarget(target);
 			PlayerManager.sendMessage("Removed " + target.toLowerCase() + " from MSG-Multicast!");
 		}
 
