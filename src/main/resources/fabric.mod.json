@@ -5,7 +5,11 @@
   "name": "JustMSG",
   "description": "A small QOL Mod, that improves the /msg command",
   "authors": ["JustACasualDay"],
-  "contact": {},
+  "contact": {
+    "homepage": "https://github.com/JustACasualDay/JustMSG/",
+    "sources": "https://github.com/JustACasualDay/JustMSG/",
+    "issues": "https://github.com/JustACasualDay/JustMSG/issues"
+  },
   "license": "CC-BY-NC-SA-4.0",
   "icon": "assets/msgmod/icon.png",
   "environment": "Client",
