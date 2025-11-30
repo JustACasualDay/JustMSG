@@ -17,7 +17,7 @@ public class MessageToggleCommand {
 	public static void register() {
 		// spotless:off
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
-            dispatcher.register(ClientCommandManager.literal("msgt").executes(MessageToggleCommand::disable)
+            dispatcher.register(ClientCommandManager.literal("msgt").executes(MessageToggleCommand::toggle)
 
                 .then(ClientCommandManager.literal("exception")
                     .then(ClientCommandManager.literal("set")
@@ -276,11 +276,13 @@ public class MessageToggleCommand {
 		return 0;
 	}
 
-	private static int disable(CommandContext<FabricClientCommandSource> context) {
-		if (PlayerManager.clearTargets()) {
-			PlayerManager.sendMessage("Successfully cleared all targets!");
+	private static int toggle(CommandContext<FabricClientCommandSource> context) {
+		if (ChatManager.isIsActive()) {
+			PlayerManager.sendMessage("msgt toggled off");
+			ChatManager.setIsActive(false);
 		} else {
-			PlayerManager.sendMessage("Nothing to clear!");
+			PlayerManager.sendMessage("msgt toggled on");
+			ChatManager.setIsActive(true);
 		}
 
 		return 0;

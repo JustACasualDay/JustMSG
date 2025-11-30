@@ -72,7 +72,6 @@ public abstract class PlayerManager {
 		}
 
 		targets.add(pTarget);
-		ChatManager.setIsActive(true);
 
 		return true;
 	}
@@ -83,9 +82,9 @@ public abstract class PlayerManager {
 		if (targets.contains(pTarget)) {
 			targets.remove(pTarget);
 
-			if (targets.isEmpty()) {
-				ChatManager.setIsActive(false);
-			}
+			/*
+			 * if (targets.isEmpty()) { ChatManager.setIsActive(false); }
+			 */
 
 			return true;
 		}

@@ -17,7 +17,7 @@ public abstract class ChatManager {
 	private static String currentMessage = "";
 
 	private static String currentException = "#";
-	private static boolean lastexpetion = false;
+	private static boolean lastexception = false;
 
 	public static void register() {
         ClientSendMessageEvents.ALLOW_CHAT.register(message -> {
@@ -29,15 +29,15 @@ public abstract class ChatManager {
                 return true;
             }
 
-            if(lastexpetion) {
-                lastexpetion = false;
+            if(lastexception) {
+                lastexception = false;
                 return true;
             }
 
             if(message.length() > currentException.length()) {
                 if (message.substring(0, currentException.length()).equals(currentException)) {
                     message = message.substring(currentException.length(), message.length());
-                    lastexpetion = true;
+                    lastexception = true;
                     MinecraftClient.getInstance().getNetworkHandler().sendChatMessage(message);
                     return false;
                 }
