@@ -1,7 +1,8 @@
 package at.justacasualday.justmsg.client.api.enums;
 
 public enum CommandParams {
-	GROUP("GroupName"), TARGET("target"), SRCGROUP("srcGroup"), DESTGROUP("destGroup"), ALIAS("alias"), EXCEPTION("exception");
+	GROUP("GroupName"), TARGET("target"), SRCGROUP("srcGroup"), DESTGROUP("destGroup"), ALIAS("alias"), EXCEPTION(
+			"exception");
 
 	private final String argName;
 

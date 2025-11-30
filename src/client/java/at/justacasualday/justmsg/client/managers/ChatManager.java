@@ -4,7 +4,6 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.message.MessageType;
-import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableTextContent;
@@ -17,8 +16,8 @@ public abstract class ChatManager {
 
 	private static String currentMessage = "";
 
-    private static String currentException = "#";
-    private static boolean lastexpetion = false;
+	private static String currentException = "#";
+	private static boolean lastexpetion = false;
 
 	public static void register() {
         ClientSendMessageEvents.ALLOW_CHAT.register(message -> {
@@ -114,11 +113,11 @@ public abstract class ChatManager {
 		isActive = value;
 	}
 
-    public static String getCurrentException() {
-        return currentException;
-    }
+	public static String getCurrentException() {
+		return currentException;
+	}
 
-    public static void setCurrentException(String currentException) {
-        ChatManager.currentException = currentException;
-    }
+	public static void setCurrentException(String currentException) {
+		ChatManager.currentException = currentException;
+	}
 }
