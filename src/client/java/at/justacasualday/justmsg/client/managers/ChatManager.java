@@ -4,6 +4,7 @@ import net.fabricmc.fabric.api.client.message.v1.ClientReceiveMessageEvents;
 import net.fabricmc.fabric.api.client.message.v1.ClientSendMessageEvents;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.network.message.MessageType;
+import net.minecraft.network.packet.c2s.play.ChatMessageC2SPacket;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TranslatableTextContent;
@@ -16,17 +17,36 @@ public abstract class ChatManager {
 
 	private static String currentMessage = "";
 
+    private static String currentException = "#";
+    private static boolean lastexpetion = false;
+
 	public static void register() {
         ClientSendMessageEvents.ALLOW_CHAT.register(message -> {
             if (!isIsActive()) {
                 return true;
             }
 
-            currentMessage = message;
-
             if(PlayerManager.getAllOnlineTargets().isEmpty()) {
                 return true;
             }
+
+            if(lastexpetion) {
+                lastexpetion = false;
+                return true;
+            }
+
+            if(message.length() > currentException.length()) {
+                if (message.substring(0, currentException.length()).equals(currentException)) {
+                    message = message.substring(currentException.length(), message.length());
+                    lastexpetion = true;
+                    MinecraftClient.getInstance().getNetworkHandler().sendChatMessage(message);
+                    return false;
+                }
+            }
+
+            if(message.equals(currentException)) return false;
+
+            currentMessage = message;
 
             for (String player : PlayerManager.getAllOnlineTargets()) {
                 MinecraftClient.getInstance().getNetworkHandler().sendChatCommand("msg " + player + " " + message);
@@ -93,4 +113,12 @@ public abstract class ChatManager {
 	public static void setIsActive(boolean value) {
 		isActive = value;
 	}
+
+    public static String getCurrentException() {
+        return currentException;
+    }
+
+    public static void setCurrentException(String currentException) {
+        ChatManager.currentException = currentException;
+    }
 }

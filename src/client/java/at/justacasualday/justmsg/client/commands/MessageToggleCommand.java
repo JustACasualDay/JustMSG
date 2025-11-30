@@ -8,7 +8,10 @@ import com.mojang.brigadier.context.CommandContext;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.ClientCommandRegistrationCallback;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
+import net.minecraft.block.entity.VaultBlockEntity;
+import net.minecraft.client.MinecraftClient;
 import net.minecraft.command.CommandSource;
+import net.minecraft.network.message.SentMessage;
 
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -18,6 +21,14 @@ public class MessageToggleCommand {
 		// spotless:off
         ClientCommandRegistrationCallback.EVENT.register((dispatcher, registryAccess) -> {
             dispatcher.register(ClientCommandManager.literal("msgt").executes(MessageToggleCommand::disable)
+
+                .then(ClientCommandManager.literal("exception")
+                    .then(ClientCommandManager.literal("set")
+                        .then(ClientCommandManager.argument(CommandParams.EXCEPTION.getArgName(), StringArgumentType.string())
+                            .executes(MessageToggleCommand::setException)
+                        ))
+                    .then(ClientCommandManager.literal("show")
+                        .executes(MessageToggleCommand::showException)))
 
                 .then(ClientCommandManager.literal("add")
                     .then(ClientCommandManager.argument(CommandParams.TARGET.getArgName(), StringArgumentType.string())
@@ -98,7 +109,21 @@ public class MessageToggleCommand {
         // spotless:on
 	}
 
-	private static int removeTarget(CommandContext<FabricClientCommandSource> context) {
+    private static int showException(CommandContext<FabricClientCommandSource> context) {
+        PlayerManager.sendMessage("The current exception is: " + ChatManager.getCurrentException());
+        return 0;
+    }
+
+    private static int setException(CommandContext<FabricClientCommandSource> context) {
+        String exception = StringArgumentType.getString(context, CommandParams.EXCEPTION.getArgName());
+        ChatManager.setCurrentException(exception);
+
+        PlayerManager.sendMessage("Exception set to: " + exception);
+
+        return 0;
+    }
+
+    private static int removeTarget(CommandContext<FabricClientCommandSource> context) {
 		String target = StringArgumentType.getString(context, CommandParams.TARGET.getArgName());
 
 		target = PlayerManager.getPlayerFromAlias(target);
